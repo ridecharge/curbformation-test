@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="NetworkTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2014-11-21T22:14:03" hostname="TaxiMagic-1094-BaseImage-3.local" time="0.565">
+  <properties/>
+  <testcase name="vpcExists[0](test)" classname="NetworkTest" time="0.565"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
