@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestFile" tests="1" skipped="0" failures="0" errors="0" timestamp="2014-11-19T22:06:16" hostname="TaxiMagic-1094-BaseImage-3.local" time="0.004">
-  <properties/>
-  <testcase name="derp" classname="TestFile" time="0.004"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
