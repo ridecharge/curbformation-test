@@ -8,9 +8,9 @@ repositories {
 }
 
 dependencies {
-
     testCompile 'org.assertj:assertj-core:1.7.0'
     compile 'com.google.guava:guava:18.0'
+    compile 'com.google.inject.extensions:guice-assistedinject:4.0-beta5'
     compile 'com.google.inject:guice:4.0-beta5'
     compile 'com.amazonaws:aws-java-sdk:1.9.6'
     testCompile 'org.testng:testng:6.8.8'
