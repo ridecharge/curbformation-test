@@ -1,6 +1,7 @@
 package com.gocurb.curbformation.test.aws.network;
 
 import com.amazonaws.services.ec2.model.InternetGateway;
+import com.amazonaws.services.ec2.model.Subnet;
 import com.amazonaws.services.ec2.model.Tag;
 import com.amazonaws.services.ec2.model.Vpc;
 import com.gocurb.curbformation.test.aws.AwsClientModule;
@@ -40,7 +41,7 @@ public class NetworkConfigurationTest {
   @Test(dataProvider = "vpcCidrAddresses",
       description = "There should only be one VPC with a given cidr inside a network environment.")
   public void hasOneVpcPerCidrAddress(final String cidrAddress) {
-    assertThat(network.fetchVpcs(cidrAddress)).hasSize(1);
+    assertThat(network.getVpcs(cidrAddress)).hasSize(1);
   }
 
   @Test(dataProvider = "vpcCidrAddresses",
@@ -75,7 +76,7 @@ public class NetworkConfigurationTest {
     final Vpc vpc = getVpc(cidrAddress);
     final Collection<InternetGateway>
         internetGateways =
-        network.fetchInternetGateways(vpc.getVpcId());
+        network.getInternetGateways(vpc.getVpcId());
     assertThat(internetGateways).hasSize(1);
   }
 
@@ -86,10 +87,19 @@ public class NetworkConfigurationTest {
     final Vpc vpc = getVpc(cidrAddress);
     final Collection<InternetGateway>
         internetGateways =
-        network.fetchInternetGateways(vpc.getVpcId());
+        network.getInternetGateways(vpc.getVpcId());
     assertThat(getInternetGateway(internetGateways).getTags())
         .contains(new Tag("Environment", network.getEnvironment()),
                   new Tag("Network", "Public"));
+  }
+
+  @Test(dataProvider = "vpcCidrAddresses",
+      description = "The VPC should have two private subnets.",
+      dependsOnMethods = "hasOneVpcPerCidrAddress")
+  public void vpcHasTwoPrivateSubnets(final String cidrAddress) {
+    final Vpc vpc = getVpc(cidrAddress);
+    final Collection<Subnet> subnets = network.getPrivateSubnets(vpc.getVpcId());
+    assertThat(subnets).hasSize(2);
   }
 
   private InternetGateway getInternetGateway(Collection<InternetGateway> internetGateways) {
@@ -98,6 +108,6 @@ public class NetworkConfigurationTest {
 
 
   private Vpc getVpc(String cidrAddress) {
-    return network.fetchVpcs(cidrAddress).iterator().next();
+    return network.getVpcs(cidrAddress).iterator().next();
   }
 }

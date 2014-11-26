@@ -1,5 +1,6 @@
 package com.gocurb.curbformation.test.aws.network;
 
+import com.gocurb.curbformation.test.aws.network.subnet.SubnetService;
 import com.gocurb.curbformation.test.aws.network.vpc.VpcService;
 
 import org.mockito.Mock;
@@ -15,12 +16,14 @@ import static org.mockito.MockitoAnnotations.initMocks;
 /**
  * Created by sgarlick on 11/26/14.
  */
-public class NetworkTest {
+public class AmazonNetworkTest {
 
   private Network network;
 
   @Mock
   private VpcService vpcService;
+  @Mock
+  private SubnetService subnetService;
 
   private static final String ENVIRONMENT = "test";
   private static final String CIDRADDRESS = "10.0.0.0/16";
@@ -29,20 +32,20 @@ public class NetworkTest {
   @BeforeTest
   public void setup() {
     initMocks(this);
-    network = new AmazonNetwork(ENVIRONMENT, vpcService);
+    network = new AmazonNetwork(ENVIRONMENT, vpcService, subnetService);
   }
 
-  @Test(description = "fetchVpcs should delegate to vpcServce.fetchVpcs")
+  @Test(description = "getVpcs should delegate to vpcServce.getVpcs")
   public void fetchVpcsDelegatesToService() {
     when(vpcService.fetchVpcs(ENVIRONMENT, CIDRADDRESS)).thenReturn(Collections.EMPTY_LIST);
-    network.fetchVpcs(CIDRADDRESS);
+    network.getVpcs(CIDRADDRESS);
     verify(vpcService).fetchVpcs(ENVIRONMENT, CIDRADDRESS);
   }
 
-  @Test(description = "fetchVpcs should delegate to vpcServce.fetchInternetGateways")
+  @Test(description = "getVpcs should delegate to vpcServce.getInternetGateways")
   public void fetchInternetGatewaysDelegatesToService() {
     when(vpcService.fetchInternetGateways(ENVIRONMENT, VPCID)).thenReturn(Collections.EMPTY_LIST);
-    network.fetchInternetGateways(VPCID);
+    network.getInternetGateways(VPCID);
     verify(vpcService).fetchInternetGateways(ENVIRONMENT, VPCID);
   }
 }

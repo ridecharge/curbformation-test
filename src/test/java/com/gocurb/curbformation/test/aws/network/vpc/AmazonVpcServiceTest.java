@@ -45,7 +45,7 @@ public class AmazonVpcServiceTest {
     initMocks(this);
   }
 
-  @Test(description = "The fetchVpcs method should call describeVpcs with Environment and cidrAddress filters")
+  @Test(description = "The getVpcs method should call describeVpcs with Environment and cidrAddress filters")
   public void fetchVpcsCallsDescribeVpcs() {
     final DescribeVpcsResult result = new DescribeVpcsResult().withVpcs(new Vpc());
     when(amazonEC2.describeVpcs(any(DescribeVpcsRequest.class))).thenReturn(result);
@@ -56,7 +56,7 @@ public class AmazonVpcServiceTest {
                   new Filter("cidr").withValues(CIDRADDRESS));
   }
 
-  @Test(description = "The fetchInternetGateways method should call describeInternetGateways with Environment and vpc-id filters")
+  @Test(description = "The getInternetGateways method should call describeInternetGateways with Environment and vpc-id filters")
   public void fetchInternetGatewaysCallsDescribeInternetGateways() {
     final DescribeInternetGatewaysResult result = new DescribeInternetGatewaysResult().withInternetGateways(new InternetGateway());
     when(amazonEC2.describeInternetGateways(any(DescribeInternetGatewaysRequest.class))).thenReturn(result);

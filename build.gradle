@@ -12,6 +12,7 @@ dependencies {
     compile 'com.google.inject.extensions:guice-assistedinject:4.0-beta5'
     compile 'com.google.inject:guice:4.0-beta5'
     compile 'com.amazonaws:aws-java-sdk:1.9.6'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
     testCompile 'org.testng:testng:6.8.8'
     testCompile 'org.mockito:mockito-all:1.10.8'
     testCompile 'org.assertj:assertj-core:1.7.0'
