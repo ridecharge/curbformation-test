@@ -11,6 +11,7 @@ import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.inject.Inject;
 
@@ -97,17 +98,54 @@ public class NetworkConfigurationTest {
       description = "The VPC should have two private subnets.",
       dependsOnMethods = "hasOneVpcPerCidrAddress")
   public void vpcHasTwoPrivateSubnets(final String cidrAddress) {
-    final Vpc vpc = getVpc(cidrAddress);
-    final Collection<Subnet> subnets = network.getPrivateSubnets(vpc.getVpcId());
-    assertThat(subnets).hasSize(2);
+    assertThat(getPrivateSubnets(cidrAddress)).hasSize(2);
+  }
+
+  @Test(dataProvider = "vpcCidrAddresses",
+      description = "The subnets should have different availability zones.",
+      dependsOnMethods = "vpcHasTwoPrivateSubnets")
+  public void vpcPrivateSubnetsHaveDifferentAZ(final String cidrAddress) {
+    subnetsAvailabilityZonesNotEqual(getPrivateSubnets(cidrAddress));
+  }
+
+  @Test(dataProvider = "vpcCidrAddresses",
+      description = "The VPC should have two public subnets.",
+      dependsOnMethods = "hasOneVpcPerCidrAddress")
+  public void vpcHasTwoPublicSubnets(final String cidrAddress) {
+    assertThat(getPublicSubnets(cidrAddress)).hasSize(2);
+  }
+
+  @Test(dataProvider = "vpcCidrAddresses",
+      description = "The subnets should have different availability zones.",
+      dependsOnMethods = "vpcHasTwoPublicSubnets")
+  public void vpcPublicSubnetsHaveDifferentAZ(final String cidrAddress) {
+    subnetsAvailabilityZonesNotEqual(getPublicSubnets(cidrAddress));
+  }
+
+
+  private void subnetsAvailabilityZonesNotEqual(Collection<Subnet> subnets) {
+    final Iterator<Subnet> iterator = subnets.iterator();
+    final Subnet subnetA = iterator.next();
+    final Subnet subnetB = iterator.next();
+    assertThat(subnetA.getAvailabilityZone())
+        .isNotEqualTo(subnetB.getAvailabilityZone());
   }
 
   private InternetGateway getInternetGateway(Collection<InternetGateway> internetGateways) {
     return internetGateways.iterator().next();
   }
 
-
   private Vpc getVpc(String cidrAddress) {
     return network.getVpcs(cidrAddress).iterator().next();
+  }
+
+  private Collection<Subnet> getPrivateSubnets(String cidrAddress) {
+    final Vpc vpc = getVpc(cidrAddress);
+    return network.getPrivateSubnets(vpc.getVpcId());
+  }
+
+  private Collection<Subnet> getPublicSubnets(String cidrAddress) {
+    final Vpc vpc = getVpc(cidrAddress);
+    return network.getPublicSubnets(vpc.getVpcId());
   }
 }

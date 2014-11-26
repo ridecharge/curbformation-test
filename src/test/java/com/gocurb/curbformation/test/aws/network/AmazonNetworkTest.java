@@ -26,8 +26,8 @@ public class AmazonNetworkTest {
   private SubnetService subnetService;
 
   private static final String ENVIRONMENT = "test";
-  private static final String CIDRADDRESS = "10.0.0.0/16";
-  private static final String VPCID = "vpc-123";
+  private static final String CIDR_ADDRESS = "10.0.0.0/16";
+  private static final String VPC_ID = "vpc-123";
 
   @BeforeTest
   public void setup() {
@@ -37,15 +37,19 @@ public class AmazonNetworkTest {
 
   @Test(description = "getVpcs should delegate to vpcServce.getVpcs")
   public void fetchVpcsDelegatesToService() {
-    when(vpcService.fetchVpcs(ENVIRONMENT, CIDRADDRESS)).thenReturn(Collections.EMPTY_LIST);
-    network.getVpcs(CIDRADDRESS);
-    verify(vpcService).fetchVpcs(ENVIRONMENT, CIDRADDRESS);
+    when(vpcService.fetchVpcs(ENVIRONMENT, CIDR_ADDRESS)).thenReturn(Collections.EMPTY_LIST);
+
+    network.getVpcs(CIDR_ADDRESS);
+
+    verify(vpcService).fetchVpcs(ENVIRONMENT, CIDR_ADDRESS);
   }
 
   @Test(description = "getVpcs should delegate to vpcServce.getInternetGateways")
   public void fetchInternetGatewaysDelegatesToService() {
-    when(vpcService.fetchInternetGateways(ENVIRONMENT, VPCID)).thenReturn(Collections.EMPTY_LIST);
-    network.getInternetGateways(VPCID);
-    verify(vpcService).fetchInternetGateways(ENVIRONMENT, VPCID);
+    when(vpcService.fetchInternetGateways(ENVIRONMENT, VPC_ID)).thenReturn(Collections.EMPTY_LIST);
+
+    network.getInternetGateways(VPC_ID);
+
+    verify(vpcService).fetchInternetGateways(ENVIRONMENT, VPC_ID);
   }
 }

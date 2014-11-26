@@ -37,8 +37,8 @@ public class AmazonVpcServiceTest {
   private ArgumentCaptor<DescribeInternetGatewaysRequest> describeInternetGatewaysRequestCaptor;
 
   private static final String ENVIRONMENT = "test";
-  private static final String CIDRADDRESS = "10.0.0.0/16";
-  private static final String VPCID = "vpc-123";
+  private static final String CIDR_ADDRESS = "10.0.0.0/16";
+  private static final String VPC_ID = "vpc-123";
 
   @BeforeTest
   public void setup() {
@@ -49,21 +49,25 @@ public class AmazonVpcServiceTest {
   public void fetchVpcsCallsDescribeVpcs() {
     final DescribeVpcsResult result = new DescribeVpcsResult().withVpcs(new Vpc());
     when(amazonEC2.describeVpcs(any(DescribeVpcsRequest.class))).thenReturn(result);
-    amazonVpcService.fetchVpcs(ENVIRONMENT, CIDRADDRESS);
+
+    amazonVpcService.fetchVpcs(ENVIRONMENT, CIDR_ADDRESS);
+
     verify(amazonEC2).describeVpcs(describeVpcsRequestCaptor.capture());
     assertThat(describeVpcsRequestCaptor.getValue().getFilters())
         .contains(new Filter("tag:Environment").withValues(ENVIRONMENT),
-                  new Filter("cidr").withValues(CIDRADDRESS));
+                  new Filter("cidr").withValues(CIDR_ADDRESS));
   }
 
   @Test(description = "The getInternetGateways method should call describeInternetGateways with Environment and vpc-id filters")
   public void fetchInternetGatewaysCallsDescribeInternetGateways() {
     final DescribeInternetGatewaysResult result = new DescribeInternetGatewaysResult().withInternetGateways(new InternetGateway());
     when(amazonEC2.describeInternetGateways(any(DescribeInternetGatewaysRequest.class))).thenReturn(result);
-    amazonVpcService.fetchInternetGateways(ENVIRONMENT, VPCID);
+
+    amazonVpcService.fetchInternetGateways(ENVIRONMENT, VPC_ID);
+
     verify(amazonEC2).describeInternetGateways(describeInternetGatewaysRequestCaptor.capture());
     assertThat(describeInternetGatewaysRequestCaptor.getValue().getFilters())
         .contains(new Filter("tag:Environment").withValues(ENVIRONMENT),
-                  new Filter("attachment.vpc-id").withValues(VPCID));
+                  new Filter("attachment.vpc-id").withValues(VPC_ID));
   }
 }
