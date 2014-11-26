@@ -24,12 +24,12 @@ public class AwsClientModule implements Module {
 
   @Provides @Singleton
   AWSCredentialsProvider providesAWSCredentialsProvider() {
-    return new PropertiesFileCredentialsProvider("/Users/sgarlick/.aws/config");
+    return new PropertiesFileCredentialsProvider(System.getProperty("user.home")+"/.aws/config");
   }
 
   @Provides @Singleton
   AmazonEC2Async providesAmazonEC2Async(final AWSCredentialsProvider awsCredentialsProvider) {
-    return  new AmazonEC2AsyncClient(awsCredentialsProvider);
+    return new AmazonEC2AsyncClient(awsCredentialsProvider);
   }
 
   @Provides @Singleton
