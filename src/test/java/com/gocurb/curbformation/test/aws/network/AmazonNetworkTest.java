@@ -1,8 +1,5 @@
 package com.gocurb.curbformation.test.aws.network;
 
-import com.gocurb.curbformation.test.aws.network.subnet.SubnetService;
-import com.gocurb.curbformation.test.aws.network.vpc.VpcService;
-
 import org.mockito.Mock;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -16,7 +13,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 /**
  * Created by sgarlick on 11/26/14.
  */
-public class AmazonNetworkTest {
+public final class AmazonNetworkTest {
 
   private Network network;
 
@@ -36,7 +33,7 @@ public class AmazonNetworkTest {
   }
 
   @Test(description = "getVpcs should delegate to vpcServce.getVpcs")
-  public void fetchVpcsDelegatesToService() {
+  public void getVpcsDelegatesToService() {
     when(vpcService.fetchVpcs(ENVIRONMENT, CIDR_ADDRESS)).thenReturn(Collections.EMPTY_LIST);
 
     network.getVpcs(CIDR_ADDRESS);
@@ -45,11 +42,29 @@ public class AmazonNetworkTest {
   }
 
   @Test(description = "getVpcs should delegate to vpcServce.getInternetGateways")
-  public void fetchInternetGatewaysDelegatesToService() {
+  public void getInternetGatewaysDelegatesToService() {
     when(vpcService.fetchInternetGateways(ENVIRONMENT, VPC_ID)).thenReturn(Collections.EMPTY_LIST);
 
     network.getInternetGateways(VPC_ID);
 
     verify(vpcService).fetchInternetGateways(ENVIRONMENT, VPC_ID);
+  }
+
+  @Test(description = "getPublicSubnets should delegate to subnetService.fetchPublicSubnets")
+  public void getPublicSubnets() {
+    when(subnetService.fetchPublicSubnets(ENVIRONMENT, VPC_ID)).thenReturn(Collections.EMPTY_LIST);
+
+    network.getPublicSubnets(VPC_ID);
+
+    verify(subnetService).fetchPublicSubnets(ENVIRONMENT, VPC_ID);
+  }
+
+  @Test(description = "getPublicSubnets should delegate to subnetService.fetchPublicSubnets")
+  public void getPrivateSubnets() {
+    when(subnetService.fetchPrivateSubnets(ENVIRONMENT, VPC_ID)).thenReturn(Collections.EMPTY_LIST);
+
+    network.getPrivateSubnets(VPC_ID);
+
+    verify(subnetService).fetchPrivateSubnets(ENVIRONMENT, VPC_ID);
   }
 }

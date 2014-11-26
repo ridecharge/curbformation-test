@@ -1,4 +1,4 @@
-package com.gocurb.curbformation.test.aws.network.subnet;
+package com.gocurb.curbformation.test.aws.network;
 
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.model.DescribeSubnetsRequest;
@@ -16,7 +16,7 @@ import javax.inject.Singleton;
  * Created by sgarlick on 11/25/14.
  */
 @Singleton
-public class AmazonSubnetService implements SubnetService {
+class AmazonSubnetService implements SubnetService {
 
   private final AmazonEC2 amazonEC2;
 

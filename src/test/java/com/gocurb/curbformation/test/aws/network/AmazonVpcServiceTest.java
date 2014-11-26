@@ -1,4 +1,4 @@
-package com.gocurb.curbformation.test.aws.network.vpc;
+package com.gocurb.curbformation.test.aws.network;
 
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.model.DescribeInternetGatewaysRequest;
@@ -8,6 +8,7 @@ import com.amazonaws.services.ec2.model.DescribeVpcsResult;
 import com.amazonaws.services.ec2.model.Filter;
 import com.amazonaws.services.ec2.model.InternetGateway;
 import com.amazonaws.services.ec2.model.Vpc;
+import com.gocurb.curbformation.test.aws.network.AmazonVpcService;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -25,7 +26,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 /**
  * Unit test for the AmazonVpcService Created by sgarlick on 11/25/14.
  */
-public class AmazonVpcServiceTest {
+public final class AmazonVpcServiceTest {
 
   @Mock
   private AmazonEC2 amazonEC2;

@@ -1,4 +1,4 @@
-package com.gocurb.curbformation.test.aws.network.vpc;
+package com.gocurb.curbformation.test.aws.network;
 
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.model.DescribeInternetGatewaysRequest;
@@ -16,7 +16,7 @@ import javax.inject.Singleton;
  * Created by sgarlick on 11/23/14. Handles operations related to VPCs
  */
 @Singleton
-public class AmazonVpcService implements VpcService {
+class AmazonVpcService implements VpcService {
 
   private final AmazonEC2 amazonEC2;
 

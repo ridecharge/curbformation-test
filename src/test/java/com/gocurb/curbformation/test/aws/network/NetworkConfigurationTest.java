@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Tests the Network configuration for a AWS Environment. Created by sgarlick on 11/19/14.
  */
 @Guice(modules = {AwsClientModule.class, AmazonNetworkModule.class})
-public class NetworkConfigurationTest {
+public final class NetworkConfigurationTest {
 
   private final Network network;
 
@@ -123,7 +123,7 @@ public class NetworkConfigurationTest {
   }
 
 
-  private void subnetsAvailabilityZonesNotEqual(Collection<Subnet> subnets) {
+  private void subnetsAvailabilityZonesNotEqual(final Collection<Subnet> subnets) {
     final Iterator<Subnet> iterator = subnets.iterator();
     final Subnet subnetA = iterator.next();
     final Subnet subnetB = iterator.next();
@@ -131,7 +131,7 @@ public class NetworkConfigurationTest {
         .isNotEqualTo(subnetB.getAvailabilityZone());
   }
 
-  private InternetGateway getInternetGateway(Collection<InternetGateway> internetGateways) {
+  private InternetGateway getInternetGateway(final Collection<InternetGateway> internetGateways) {
     return internetGateways.iterator().next();
   }
 
@@ -139,12 +139,12 @@ public class NetworkConfigurationTest {
     return network.getVpcs(cidrAddress).iterator().next();
   }
 
-  private Collection<Subnet> getPrivateSubnets(String cidrAddress) {
+  private Collection<Subnet> getPrivateSubnets(final String cidrAddress) {
     final Vpc vpc = getVpc(cidrAddress);
     return network.getPrivateSubnets(vpc.getVpcId());
   }
 
-  private Collection<Subnet> getPublicSubnets(String cidrAddress) {
+  private Collection<Subnet> getPublicSubnets(final String cidrAddress) {
     final Vpc vpc = getVpc(cidrAddress);
     return network.getPublicSubnets(vpc.getVpcId());
   }

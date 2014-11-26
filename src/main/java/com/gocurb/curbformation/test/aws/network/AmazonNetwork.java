@@ -6,8 +6,6 @@ import com.google.inject.assistedinject.Assisted;
 import com.amazonaws.services.ec2.model.InternetGateway;
 import com.amazonaws.services.ec2.model.Subnet;
 import com.amazonaws.services.ec2.model.Vpc;
-import com.gocurb.curbformation.test.aws.network.subnet.SubnetService;
-import com.gocurb.curbformation.test.aws.network.vpc.VpcService;
 
 import java.util.Collection;
 
