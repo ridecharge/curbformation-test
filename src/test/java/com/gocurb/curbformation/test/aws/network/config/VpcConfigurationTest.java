@@ -1,42 +1,31 @@
-package com.gocurb.curbformation.test.aws.network;
+package com.gocurb.curbformation.test.aws.network.config;
 
 import com.amazonaws.services.ec2.model.InternetGateway;
-import com.amazonaws.services.ec2.model.Subnet;
 import com.amazonaws.services.ec2.model.Tag;
 import com.amazonaws.services.ec2.model.Vpc;
 import com.gocurb.curbformation.test.aws.AwsClientModule;
+import com.gocurb.curbformation.test.aws.network.AmazonNetworkModule;
+import com.gocurb.curbformation.test.aws.network.NetworkFactory;
 
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests the Network configuration for a AWS Environment. Created by sgarlick on 11/19/14.
+ * Created by sgarlick on 11/26/14.
  */
 @Guice(modules = {AwsClientModule.class, AmazonNetworkModule.class})
-public final class NetworkConfigurationTest {
-
-  private final Network network;
-
-  /**
-   * List of cidrAddresses that should be associated with a single vpc within our network
-   * environment
-   */
-  @DataProvider(name = "vpcCidrAddresses")
-  public Object[][] vpcCidrAddresses() {
-    return new Object[][]{{"10.0.0.0/16"}};
-  }
+@Test(groups = {"config-tests", "vpc-config-tests"})
+public class VpcConfigurationTest extends AbstractNetworkConfigurationTest {
 
   @Inject
-  NetworkConfigurationTest(final NetworkFactory networkFactory) {
-    network = networkFactory.create(System.getProperty("environment", "test"));
+  VpcConfigurationTest(final NetworkFactory networkFactory) {
+    super(networkFactory);
   }
 
   @Test(dataProvider = "vpcCidrAddresses",
@@ -66,7 +55,7 @@ public final class NetworkConfigurationTest {
   public void vpcHasTags(final String cidrAddress) {
     final Collection<Tag> tags = getVpc(cidrAddress).getTags();
     assertThat(tags).contains(new Tag("Environment", network.getEnvironment()),
-                              new Tag("Name", network.getEnvironment() + "-VPC"));
+                              new Tag("Name", network.getEnvironment()));
   }
 
 
@@ -94,58 +83,9 @@ public final class NetworkConfigurationTest {
                   new Tag("Network", "Public"));
   }
 
-  @Test(dataProvider = "vpcCidrAddresses",
-      description = "The VPC should have two private subnets.",
-      dependsOnMethods = "hasOneVpcPerCidrAddress")
-  public void vpcHasTwoPrivateSubnets(final String cidrAddress) {
-    assertThat(getPrivateSubnets(cidrAddress)).hasSize(2);
-  }
-
-  @Test(dataProvider = "vpcCidrAddresses",
-      description = "The subnets should have different availability zones.",
-      dependsOnMethods = "vpcHasTwoPrivateSubnets")
-  public void vpcPrivateSubnetsHaveDifferentAZ(final String cidrAddress) {
-    subnetsAvailabilityZonesNotEqual(getPrivateSubnets(cidrAddress));
-  }
-
-  @Test(dataProvider = "vpcCidrAddresses",
-      description = "The VPC should have two public subnets.",
-      dependsOnMethods = "hasOneVpcPerCidrAddress")
-  public void vpcHasTwoPublicSubnets(final String cidrAddress) {
-    assertThat(getPublicSubnets(cidrAddress)).hasSize(2);
-  }
-
-  @Test(dataProvider = "vpcCidrAddresses",
-      description = "The subnets should have different availability zones.",
-      dependsOnMethods = "vpcHasTwoPublicSubnets")
-  public void vpcPublicSubnetsHaveDifferentAZ(final String cidrAddress) {
-    subnetsAvailabilityZonesNotEqual(getPublicSubnets(cidrAddress));
-  }
-
-
-  private void subnetsAvailabilityZonesNotEqual(final Collection<Subnet> subnets) {
-    final Iterator<Subnet> iterator = subnets.iterator();
-    final Subnet subnetA = iterator.next();
-    final Subnet subnetB = iterator.next();
-    assertThat(subnetA.getAvailabilityZone())
-        .isNotEqualTo(subnetB.getAvailabilityZone());
-  }
 
   private InternetGateway getInternetGateway(final Collection<InternetGateway> internetGateways) {
     return internetGateways.iterator().next();
   }
 
-  private Vpc getVpc(String cidrAddress) {
-    return network.getVpcs(cidrAddress).iterator().next();
-  }
-
-  private Collection<Subnet> getPrivateSubnets(final String cidrAddress) {
-    final Vpc vpc = getVpc(cidrAddress);
-    return network.getPrivateSubnets(vpc.getVpcId());
-  }
-
-  private Collection<Subnet> getPublicSubnets(final String cidrAddress) {
-    final Vpc vpc = getVpc(cidrAddress);
-    return network.getPublicSubnets(vpc.getVpcId());
-  }
 }

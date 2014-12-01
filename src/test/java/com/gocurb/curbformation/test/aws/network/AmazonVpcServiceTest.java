@@ -8,7 +8,6 @@ import com.amazonaws.services.ec2.model.DescribeVpcsResult;
 import com.amazonaws.services.ec2.model.Filter;
 import com.amazonaws.services.ec2.model.InternetGateway;
 import com.amazonaws.services.ec2.model.Vpc;
-import com.gocurb.curbformation.test.aws.network.AmazonVpcService;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -47,7 +46,8 @@ public final class AmazonVpcServiceTest {
   }
 
   @Test(description = "The getVpcs method should call describeVpcs with Environment and cidrAddress filters")
-  public void fetchVpcsCallsDescribeVpcs() {
+  public final void fetchVpcsCallsDescribeVpcs() {
+
     final DescribeVpcsResult result = new DescribeVpcsResult().withVpcs(new Vpc());
     when(amazonEC2.describeVpcs(any(DescribeVpcsRequest.class))).thenReturn(result);
 
@@ -60,7 +60,7 @@ public final class AmazonVpcServiceTest {
   }
 
   @Test(description = "The getInternetGateways method should call describeInternetGateways with Environment and vpc-id filters")
-  public void fetchInternetGatewaysCallsDescribeInternetGateways() {
+  public final void fetchInternetGatewaysCallsDescribeInternetGateways() {
     final DescribeInternetGatewaysResult result = new DescribeInternetGatewaysResult().withInternetGateways(new InternetGateway());
     when(amazonEC2.describeInternetGateways(any(DescribeInternetGatewaysRequest.class))).thenReturn(result);
 
