@@ -46,12 +46,27 @@ public class AmazonNetwork implements Network {
   }
 
   @Override
+  public Collection<InternetGateway> getInternetGateways(final Vpc vpc) {
+    return vpcService.fetchInternetGateways(environment, vpc.getVpcId());
+  }
+
+  @Override
   public Collection<Subnet> getPublicSubnets(final String vpcId) {
     return subnetService.fetchPublicSubnets(environment, vpcId);
   }
 
   @Override
+  public Collection<Subnet> getPublicSubnets(final Vpc vpc) {
+    return subnetService.fetchPublicSubnets(environment, vpc.getVpcId());
+  }
+
+  @Override
   public Collection<Subnet> getPrivateSubnets(final String vpcId) {
     return subnetService.fetchPrivateSubnets(environment, vpcId);
+  }
+
+  @Override
+  public Collection<Subnet> getPrivateSubnets(final Vpc vpc) {
+    return subnetService.fetchPrivateSubnets(environment, vpc.getVpcId());
   }
 }

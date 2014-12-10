@@ -1,7 +1,6 @@
 package com.gocurb.curbformation.test.aws.network.config;
 
 import com.amazonaws.services.ec2.model.Subnet;
-import com.amazonaws.services.ec2.model.Vpc;
 import com.gocurb.curbformation.test.aws.AwsClientModule;
 import com.gocurb.curbformation.test.aws.network.AmazonNetworkModule;
 import com.gocurb.curbformation.test.aws.network.NetworkFactory;
@@ -64,12 +63,10 @@ public final class SubnetConfigurationTest extends AbstractNetworkConfigurationT
   }
 
   private Collection<Subnet> getPrivateSubnets(final String cidrAddress) {
-    final Vpc vpc = getVpc(cidrAddress);
-    return network.getPrivateSubnets(vpc.getVpcId());
+    return network.getPrivateSubnets(getVpc(cidrAddress));
   }
 
   private Collection<Subnet> getPublicSubnets(final String cidrAddress) {
-    final Vpc vpc = getVpc(cidrAddress);
-    return network.getPublicSubnets(vpc.getVpcId());
+    return network.getPublicSubnets(getVpc(cidrAddress));
   }
 }

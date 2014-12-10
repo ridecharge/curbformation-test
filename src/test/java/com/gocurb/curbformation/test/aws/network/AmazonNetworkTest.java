@@ -1,10 +1,10 @@
 package com.gocurb.curbformation.test.aws.network;
 
+import com.beust.jcommander.internal.Lists;
+
 import org.mockito.Mock;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
-import java.util.Collections;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,7 +34,7 @@ public final class AmazonNetworkTest {
 
   @Test(description = "getVpcs should delegate to vpcServce.getVpcs")
   public void getVpcsDelegatesToService() {
-    when(vpcService.fetchVpcs(ENVIRONMENT, CIDR_ADDRESS)).thenReturn(Collections.EMPTY_LIST);
+    when(vpcService.fetchVpcs(ENVIRONMENT, CIDR_ADDRESS)).thenReturn(Lists.newArrayList());
 
     network.getVpcs(CIDR_ADDRESS);
 
@@ -43,7 +43,7 @@ public final class AmazonNetworkTest {
 
   @Test(description = "getVpcs should delegate to vpcServce.getInternetGateways")
   public void getInternetGatewaysDelegatesToService() {
-    when(vpcService.fetchInternetGateways(ENVIRONMENT, VPC_ID)).thenReturn(Collections.EMPTY_LIST);
+    when(vpcService.fetchInternetGateways(ENVIRONMENT, VPC_ID)).thenReturn(Lists.newArrayList());
 
     network.getInternetGateways(VPC_ID);
 
@@ -52,7 +52,7 @@ public final class AmazonNetworkTest {
 
   @Test(description = "getPublicSubnets should delegate to subnetService.fetchPublicSubnets")
   public void getPublicSubnets() {
-    when(subnetService.fetchPublicSubnets(ENVIRONMENT, VPC_ID)).thenReturn(Collections.EMPTY_LIST);
+    when(subnetService.fetchPublicSubnets(ENVIRONMENT, VPC_ID)).thenReturn(Lists.newArrayList());
 
     network.getPublicSubnets(VPC_ID);
 
@@ -61,7 +61,7 @@ public final class AmazonNetworkTest {
 
   @Test(description = "getPublicSubnets should delegate to subnetService.fetchPublicSubnets")
   public void getPrivateSubnets() {
-    when(subnetService.fetchPrivateSubnets(ENVIRONMENT, VPC_ID)).thenReturn(Collections.EMPTY_LIST);
+    when(subnetService.fetchPrivateSubnets(ENVIRONMENT, VPC_ID)).thenReturn(Lists.newArrayList());
 
     network.getPrivateSubnets(VPC_ID);
 

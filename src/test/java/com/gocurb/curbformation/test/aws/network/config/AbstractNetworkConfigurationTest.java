@@ -26,7 +26,7 @@ public class AbstractNetworkConfigurationTest {
     return new Object[][]{{"10.0.0.0/16"}};
   }
 
-  protected Vpc getVpc(String cidrAddress) {
+  protected Vpc getVpc(final String cidrAddress) {
     return network.getVpcs(cidrAddress).iterator().next();
   }
 }

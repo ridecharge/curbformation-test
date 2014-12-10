@@ -28,7 +28,13 @@ public interface Network {
    */
   public Collection<InternetGateway> getInternetGateways(final String vpcId);
 
+  public Collection<InternetGateway> getInternetGateways(Vpc vpc);
+
   public Collection<Subnet> getPublicSubnets(String vpcId);
 
+  public Collection<Subnet> getPublicSubnets(Vpc vpc);
+
   public Collection<Subnet> getPrivateSubnets(String vpcId);
+
+  public Collection<Subnet> getPrivateSubnets(Vpc vpc);
 }
