@@ -9,7 +9,7 @@ import org.testng.annotations.DataProvider;
 /**
  * Created by sgarlick on 11/26/14.
  */
-public class AbstractNetworkConfigurationTest {
+public abstract class AbstractNetworkConfigurationTest {
 
   protected final Network network;
 
@@ -21,9 +21,9 @@ public class AbstractNetworkConfigurationTest {
    * List of cidrAddresses that should be associated with a single vpc within our network
    * environment
    */
-  @DataProvider(name = "vpcCidrAddresses")
+  @DataProvider(name = "vpcCidrAddresses", parallel = true)
   public Object[][] vpcCidrAddresses() {
-    return new Object[][]{{"10.0.0.0/16"}};
+    return new Object[][]{{"10.0.0.0/16"},{"10.1.0.0/16"}};
   }
 
   protected Vpc getVpc(final String cidrAddress) {

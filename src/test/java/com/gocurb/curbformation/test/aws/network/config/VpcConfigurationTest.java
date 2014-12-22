@@ -55,8 +55,7 @@ public class VpcConfigurationTest extends AbstractNetworkConfigurationTest {
       dependsOnMethods = "hasOneVpcPerCidrAddress")
   public void vpcHasTags(final String cidrAddress) {
     final Collection<Tag> tags = getVpc(cidrAddress).getTags();
-    assertThat(tags).contains(new Tag("Environment", network.getEnvironment()),
-                              new Tag("Name", network.getEnvironment()));
+    assertThat(tags).contains(new Tag("Environment", network.getEnvironment()));
   }
 
 
