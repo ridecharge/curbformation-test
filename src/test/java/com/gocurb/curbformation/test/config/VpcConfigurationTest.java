@@ -1,4 +1,4 @@
-package com.gocurb.curbformation.test.aws.network.config;
+package com.gocurb.curbformation.test.config;
 
 import com.amazonaws.services.ec2.model.InternetGateway;
 import com.amazonaws.services.ec2.model.Tag;
