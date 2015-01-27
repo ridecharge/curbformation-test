@@ -53,7 +53,6 @@ public final class SubnetConfigurationTest extends AbstractNetworkConfigurationT
     subnetsAvailabilityZonesNotEqual(getPublicSubnets(cidrAddress));
   }
 
-
   private void subnetsAvailabilityZonesNotEqual(final Collection<Subnet> subnets) {
     final Iterator<Subnet> iterator = subnets.iterator();
     final Subnet subnetA = iterator.next();

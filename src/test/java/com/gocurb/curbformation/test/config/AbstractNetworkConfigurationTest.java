@@ -23,7 +23,7 @@ public abstract class AbstractNetworkConfigurationTest {
    */
   @DataProvider(name = "vpcCidrAddresses", parallel = true)
   public Object[][] vpcCidrAddresses() {
-    return new Object[][]{{"10.0.0.0/16"},{"10.1.0.0/16"}};
+    return new Object[][]{{"10.250.0.0/16"},{"10.251.0.0/16"}};
   }
 
   protected Vpc getVpc(final String cidrAddress) {

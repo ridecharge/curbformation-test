@@ -40,7 +40,7 @@ class AmazonSubnetService implements SubnetService {
         request =
         new DescribeSubnetsRequest()
             .withFilters(new Filter("tag:Environment").withValues(environment),
-                         new Filter("tag:Network").withValues(visibility.toString()),
+                         new Filter("tag:network").withValues(visibility.toString().toLowerCase()),
                          new Filter("vpc-id").withValues(vpcId));
     return amazonEC2.describeSubnets(request).getSubnets();
   }
