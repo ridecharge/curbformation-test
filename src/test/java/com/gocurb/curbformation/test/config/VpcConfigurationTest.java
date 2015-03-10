@@ -79,7 +79,9 @@ public class VpcConfigurationTest extends AbstractNetworkConfigurationTest {
                   new Tag("Network", "public"));
   }
 
-  @Test(dataProvider = "peeredVpcs", description = "The VPCs should have a peering connection.")
+  @Test(dataProvider = "peeredVpcs",
+      description = "The VPCs should have a peering connection.",
+      dependsOnMethods = "hasOneVpcPerCidrAddress")
   public void vpcHasPeeringConnection(final String accepterVpc, final String requesterVpc) {
     final Collection<VpcPeeringConnection> vpcPeeringConnections =
         network.getVpcPeeringConnections(accepterVpc, requesterVpc);
