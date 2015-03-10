@@ -2,10 +2,12 @@ package com.gocurb.curbformation.test.aws.network;
 
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.model.DescribeInternetGatewaysRequest;
+import com.amazonaws.services.ec2.model.DescribeVpcPeeringConnectionsRequest;
 import com.amazonaws.services.ec2.model.DescribeVpcsRequest;
 import com.amazonaws.services.ec2.model.Filter;
 import com.amazonaws.services.ec2.model.InternetGateway;
 import com.amazonaws.services.ec2.model.Vpc;
+import com.amazonaws.services.ec2.model.VpcPeeringConnection;
 
 import java.util.Collection;
 
@@ -36,7 +38,22 @@ class AmazonVpcService implements VpcService {
 
 
   @Override
-  public Collection<InternetGateway> fetchInternetGateways(final String environment, final String vpcId) {
+  public Collection<VpcPeeringConnection>
+  fetchVpcPeeringConnections(final String environment,
+                            final String accepterCidrBlock,
+                            final String requesterCidrBlock) {
+    final DescribeVpcPeeringConnectionsRequest request =
+        new DescribeVpcPeeringConnectionsRequest()
+            .withFilters(new Filter("tag:Environment").withValues(environment),
+                         new Filter("accepter-vpc-info.cidr-block").withValues(accepterCidrBlock),
+                         new Filter("requester-vpc-info.cidr-block")
+                             .withValues(requesterCidrBlock));
+    return amazonEC2.describeVpcPeeringConnections(request).getVpcPeeringConnections();
+  }
+
+  @Override
+  public Collection<InternetGateway> fetchInternetGateways(final String environment,
+                                                           final String vpcId) {
     final DescribeInternetGatewaysRequest
         request =
         new DescribeInternetGatewaysRequest()

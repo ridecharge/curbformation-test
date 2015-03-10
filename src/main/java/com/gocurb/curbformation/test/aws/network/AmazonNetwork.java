@@ -6,14 +6,15 @@ import com.google.inject.assistedinject.Assisted;
 import com.amazonaws.services.ec2.model.InternetGateway;
 import com.amazonaws.services.ec2.model.Subnet;
 import com.amazonaws.services.ec2.model.Vpc;
+import com.amazonaws.services.ec2.model.VpcPeeringConnection;
 
 import java.util.Collection;
 
 import javax.inject.Inject;
 
 /**
- * Immutable object that identifies a network by its Environment.
- * Created by sgarlick on 11/22/14. Describes the state of a Network
+ * Immutable object that identifies a network by its Environment. Created by sgarlick on 11/22/14.
+ * Describes the state of a Network
  */
 public class AmazonNetwork implements Network {
 
@@ -38,6 +39,14 @@ public class AmazonNetwork implements Network {
   @Override
   public Collection<Vpc> getVpcs(final String cidrAddress) {
     return vpcService.fetchVpcs(environment, cidrAddress);
+  }
+
+  @Override
+  public Collection<VpcPeeringConnection>
+  getVpcPeeringConnections(final String accepterCidrBlock,
+                           final String requesterCidrBlock) {
+    return vpcService
+        .fetchVpcPeeringConnections(this.environment, accepterCidrBlock, requesterCidrBlock);
   }
 
   @Override

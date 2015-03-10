@@ -3,6 +3,7 @@ package com.gocurb.curbformation.test.config;
 import com.amazonaws.services.ec2.model.InternetGateway;
 import com.amazonaws.services.ec2.model.Tag;
 import com.amazonaws.services.ec2.model.Vpc;
+import com.amazonaws.services.ec2.model.VpcPeeringConnection;
 import com.gocurb.curbformation.test.aws.AwsClientModule;
 import com.gocurb.curbformation.test.aws.network.AmazonNetworkModule;
 import com.gocurb.curbformation.test.aws.network.NetworkFactory;
@@ -17,8 +18,7 @@ import javax.inject.Inject;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Created by sgarlick on 11/26/14.
- * Asserts the configuration of our VPCs
+ * Created by sgarlick on 11/26/14. Asserts the configuration of our VPCs
  */
 @Guice(modules = {AwsClientModule.class, AmazonNetworkModule.class})
 @Test(groups = {"config-tests", "vpc-config-tests"})
@@ -76,9 +76,22 @@ public class VpcConfigurationTest extends AbstractNetworkConfigurationTest {
   public void vpcInternetGatewayHasTags(final String cidrAddress) {
     assertThat(getInternetGateway(cidrAddress).getTags())
         .contains(new Tag("Environment", network.getEnvironment()),
-                  new Tag("Network", "Public"));
+                  new Tag("Network", "public"));
   }
 
+  @Test(dataProvider = "peeredVpcs", description = "The VPCs should have a peering connection.")
+  public void vpcHasPeeringConnection(final String accepterVpc, final String requesterVpc) {
+    final Collection<VpcPeeringConnection> vpcPeeringConnections =
+        network.getVpcPeeringConnections(accepterVpc, requesterVpc);
+    assertThat(vpcPeeringConnections).hasSize(1);
+
+    final Vpc accepter = network.getVpcs(accepterVpc).iterator().next();
+    final Vpc requester = network.getVpcs(requesterVpc).iterator().next();
+    final VpcPeeringConnection vpcPeeringConnection = vpcPeeringConnections.iterator().next();
+    assertThat(accepter.getVpcId()).isEqualTo(vpcPeeringConnection.getAccepterVpcInfo().getVpcId());
+    assertThat(requester.getVpcId())
+        .isEqualTo(vpcPeeringConnection.getRequesterVpcInfo().getVpcId());
+  }
 
   private InternetGateway getInternetGateway(final String cidrAddress) {
     final Vpc vpc = getVpc(cidrAddress);

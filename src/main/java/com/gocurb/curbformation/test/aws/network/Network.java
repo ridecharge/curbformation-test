@@ -3,6 +3,7 @@ package com.gocurb.curbformation.test.aws.network;
 import com.amazonaws.services.ec2.model.InternetGateway;
 import com.amazonaws.services.ec2.model.Subnet;
 import com.amazonaws.services.ec2.model.Vpc;
+import com.amazonaws.services.ec2.model.VpcPeeringConnection;
 
 import java.util.Collection;
 
@@ -20,6 +21,10 @@ public interface Network {
    * @return collection of vpcs that match the networks environment and cidrAddress
    */
   public Collection<Vpc> getVpcs(final String cidrAddress);
+
+  public Collection<VpcPeeringConnection>
+  getVpcPeeringConnections(String accepterCidrBlock,
+                           String requesterCidrBlock);
 
   /**
    * Fetches all the internet gateways for a given vpcId and network environment.
