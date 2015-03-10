@@ -21,6 +21,8 @@ public final class AmazonNetworkTest {
   private VpcService vpcService;
   @Mock
   private SubnetService subnetService;
+  @Mock
+  private RouteService routeService;
 
   private static final String ENVIRONMENT = "test";
   private static final String CIDR_ADDRESS = "10.0.0.0/16";
@@ -29,7 +31,7 @@ public final class AmazonNetworkTest {
   @BeforeTest
   public void setup() {
     initMocks(this);
-    network = new AmazonNetwork(ENVIRONMENT, vpcService, subnetService);
+    network = new AmazonNetwork(ENVIRONMENT, vpcService, subnetService, routeService);
   }
 
   @Test(description = "getVpcs should delegate to vpcServce.getVpcs")

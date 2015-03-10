@@ -4,6 +4,7 @@ package com.gocurb.curbformation.test.aws.network;
 import com.google.inject.assistedinject.Assisted;
 
 import com.amazonaws.services.ec2.model.InternetGateway;
+import com.amazonaws.services.ec2.model.RouteTable;
 import com.amazonaws.services.ec2.model.Subnet;
 import com.amazonaws.services.ec2.model.Vpc;
 import com.amazonaws.services.ec2.model.VpcPeeringConnection;
@@ -20,6 +21,7 @@ public class AmazonNetwork implements Network {
 
   private final VpcService vpcService;
   private final SubnetService subnetService;
+  private final RouteService routeService;
   private final String environment;
 
   @Override
@@ -30,10 +32,12 @@ public class AmazonNetwork implements Network {
   @Inject
   AmazonNetwork(@Assisted("environment") final String environment,
                 final VpcService vpcService,
-                final SubnetService subnetService) {
+                final SubnetService subnetService,
+                final RouteService routeService) {
     this.environment = environment;
     this.vpcService = vpcService;
     this.subnetService = subnetService;
+    this.routeService = routeService;
   }
 
   @Override
@@ -52,6 +56,16 @@ public class AmazonNetwork implements Network {
   @Override
   public Collection<InternetGateway> getInternetGateways(final String vpcId) {
     return vpcService.fetchInternetGateways(environment, vpcId);
+  }
+
+  @Override
+  public Collection<RouteTable> getPrivateRouteTables(final String vpcId) {
+    return routeService.fetchPrivateRouteTables(this.environment, vpcId);
+  }
+
+  @Override
+  public Collection<RouteTable> getPublicRouteTables(final String vpcId) {
+    return routeService.fetchPublicRouteTables(this.environment, vpcId);
   }
 
   @Override

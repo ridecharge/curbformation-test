@@ -14,9 +14,9 @@ interface VpcService {
   public Collection<Vpc> fetchVpcs(final String environment, final String cidrAddress);
 
   public Collection<VpcPeeringConnection>
-  fetchVpcPeeringConnections(String environment,
-                             String accepterCidrBlock,
-                             String requesterCidrBlock);
+  fetchVpcPeeringConnections(final String environment,
+                             final String accepterCidrBlock,
+                             final String requesterCidrBlock);
 
   public Collection<InternetGateway> fetchInternetGateways(final String environment,
                                                            final String vpcId);

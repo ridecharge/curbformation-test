@@ -13,5 +13,6 @@ public class AmazonNetworkModule extends AbstractModule {
                 .build(NetworkFactory.class));
     bind(VpcService.class).to(AmazonVpcService.class);
     bind(SubnetService.class).to(AmazonSubnetService.class);
+    bind(RouteService.class).to(AmazonRouteService.class);
   }
 }

@@ -8,7 +8,7 @@ import java.util.Collection;
  * Created by sgarlick on 11/26/14.
  */
 interface SubnetService {
-  public Collection<Subnet> fetchPublicSubnets(String environment, String vpcId);
+  public Collection<Subnet> fetchPublicSubnets(final String environment, final String vpcId);
 
-  public Collection<Subnet> fetchPrivateSubnets(String environment, String vpcId);
+  public Collection<Subnet> fetchPrivateSubnets(final String environment, final String vpcId);
 }
